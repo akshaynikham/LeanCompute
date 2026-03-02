@@ -13,4 +13,7 @@ struct SystemInfo {
     bool avx2_supported;
 };
 
+void system_info_init(struct SystemInfo *info);
+void system_info_print(const struct SystemInfo *info);
+
 #endif
