@@ -1,6 +1,7 @@
 #include "system_info.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 void detect_cpu_parallelism(struct SystemInfo *info){
     if(!info) return;
@@ -17,19 +18,24 @@ void detect_cpu_parallelism(struct SystemInfo *info){
 
     while(fgets(buffer,sizeof(buffer), info_file) != NULL){
 
-        if (strstr(buffer,"processor")){
+        if (strstr(buffer,"processor\t")){
             processor_count++;
         }
 
         if (strstr(buffer, "cpu cores") && cpu_cores == 0){
-            // cpu_cores = atoi(buffer);
+            char *ptr = strchr(buffer, ':');
+            if(ptr != NULL) {cpu_cores = atoi(ptr + 1);}
+            
         }
     }
 
     fclose(info_file);
 
-    printf("total processor: %d \n", info->thread_count);
-    printf("cpu cores: %d \n", cpu_cores);
+    info->thread_count = processor_count;
+    info->core_count = cpu_cores;
+
+    // printf("total processor: %d \n", info->thread_count);
+    // printf("cpu cores: %d \n", info->core_count);
 
 }
 
