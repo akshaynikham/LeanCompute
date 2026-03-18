@@ -14,7 +14,8 @@ struct SystemInfo {
 };
 
 void system_info_init(struct SystemInfo *info);
-void system_info_print(const struct SystemInfo *info);
 void detect_os_bitness(struct SystemInfo *info);
 void detect_cpu_parallelism(struct SystemInfo *info);
+void detect_ram(struct SystemInfo *info);
+void system_info_print(const struct SystemInfo *info);
 #endif

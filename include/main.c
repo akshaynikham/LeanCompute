@@ -7,8 +7,8 @@ int main(){
     system_info_init(&test_info);
     detect_os_bitness(&test_info);
     detect_cpu_parallelism(&test_info);
+    detect_ram(&test_info);
     system_info_print(&test_info);
-    
      
     return 0;
 }

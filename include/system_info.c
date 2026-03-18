@@ -18,7 +18,7 @@ void detect_cpu_parallelism(struct SystemInfo *info){
 
     while(fgets(buffer,sizeof(buffer), info_file) != NULL){
 
-        if (strstr(buffer,"processor\t")){
+        if (strstr(buffer,"processor")){
             processor_count++;
         }
 
@@ -34,11 +34,33 @@ void detect_cpu_parallelism(struct SystemInfo *info){
     info->thread_count = processor_count;
     info->core_count = cpu_cores;
 
-    // printf("total processor: %d \n", info->thread_count);
-    // printf("cpu cores: %d \n", info->core_count);
-
 }
 
+void detect_ram(struct SystemInfo *info){
+    if (!info) return;
+
+    FILE *info_file;
+
+    info_file = fopen("/proc/meminfo", "r");
+
+    if(info_file == NULL) return;
+
+    char buffer[256];
+    int ram_MB = 0;
+
+    while (fgets(buffer, sizeof(buffer), info_file)!= NULL)
+    {
+        if (strstr(buffer,"MemTotal")){
+            char *ptr = strchr(buffer, ':');
+            if(ptr !=NULL ) {ram_MB = atoi(ptr + 1);}
+            ram_MB = ram_MB / 1024;
+            info->ram_mb = ram_MB;
+            break;
+        }
+    }
+
+    fclose(info_file);
+}
 
 
 void system_info_print(const struct SystemInfo *info){
