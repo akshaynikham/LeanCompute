@@ -63,6 +63,54 @@ void detect_ram(struct SystemInfo *info){
 }
 
 
+void detect_cpu_features(struct SystemInfo *info){
+    if(!info) return;
+
+    FILE *info_file = fopen("/proc/cpuinfo", "r");
+    if(info_file == NULL) return;
+
+    char buffer[1024];
+
+    while(fgets(buffer, sizeof(buffer), info_file) != NULL){
+
+        if(strstr(buffer, "flags")){
+
+            char *ptr = strchr(buffer, ':');
+            if(ptr == NULL) continue;
+
+            char temp[256];
+            strcpy(temp, ptr + 1);   
+
+            char *token = strtok(temp, " \t\n");
+
+            while(token != NULL){
+
+                if(strcmp(token, "avx") == 0){
+                    info->avx_supported = true;
+                }
+
+                if(strcmp(token, "avx2") == 0){
+                    info->avx2_supported = true;
+                }
+
+                if(info->avx_supported && info->avx2_supported){
+                    break;
+                }
+                
+                
+                token = strtok(NULL, " \t\n");
+            }
+
+        }
+
+        if(info->avx_supported && info->avx2_supported){
+                    break;
+                }
+    }
+
+    fclose(info_file);
+}
+
 void system_info_print(const struct SystemInfo *info){
     if(!info) return;
 
