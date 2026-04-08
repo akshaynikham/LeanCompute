@@ -22,6 +22,11 @@ struct formatInfo
     char ars_text[256];
 };
 
+struct reasons
+{
+    char reason[3][256];
+    int reason_Count;
+};
 
 void system_info_init(struct SystemInfo *info);
 void detect_os_bitness(struct SystemInfo *info);
@@ -33,4 +38,6 @@ void detect_cpu_features(struct SystemInfo *info);
 int compute_ars(struct SystemInfo *info);
 void format_system_info(const struct SystemInfo *raw_info, struct formatInfo *formatted_info, int ars_result);
 void format_system_info_print(const struct formatInfo *formatted_info);
+void generate_reasons(struct reasons *reasons_info, const struct SystemInfo *info);
+void print_reasons(const struct reasons *reasons);
 #endif

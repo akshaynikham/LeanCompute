@@ -209,6 +209,38 @@ void format_system_info(const struct SystemInfo *raw_info, struct formatInfo *fo
     
 }
 
+void generate_reasons(struct reasons *reasons, const struct SystemInfo *info)
+
+{
+    if(!reasons || !info) return;
+
+    reasons->reason_Count = 0;
+    int max_limit = 3;
+
+    if (info->ram_mb < 8192){
+        if(reasons->reason_Count < 3)
+            {   strcpy(reasons->reason[reasons->reason_Count], "RAM is below recommended (8GB)"); 
+                reasons->reason_Count++;
+            }
+    }
+
+    if (info->avx2_supported == false){
+        if(reasons->reason_Count < 3){
+            strcpy(reasons->reason[reasons->reason_Count], "AVX2 not supported");
+            reasons->reason_Count++;
+        }
+    }
+
+    if (info->thread_count < 4 ){
+        if(reasons->reason_Count < 3){
+            strcpy(reasons->reason[reasons->reason_Count], "CPU threads are below recommended (4)");
+            reasons->reason_Count++;
+        }
+    }
+
+    
+}
+
 void format_system_info_print(const struct formatInfo *formatted_info){
 
     printf("\nSystem Summary\n");
@@ -218,4 +250,11 @@ void format_system_info_print(const struct formatInfo *formatted_info){
     printf("AVX: %s\t\n", formatted_info->avx_text);
     printf("AVX2: %s\t\n\n", formatted_info->avx2_text);
     printf("AI Readiness: %s\t\n\n", formatted_info->ars_text);
+}
+
+void print_reasons(const struct reasons *reasons){
+    printf("\nReasons:\n\n");
+    for (int i = 0; i<reasons->reason_Count; i++){
+        printf("%s\n",reasons->reason[i]);
+    }
 }
