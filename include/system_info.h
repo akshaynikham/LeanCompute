@@ -28,6 +28,26 @@ struct reasons
     int reason_Count;
 };
 
+
+typedef enum{
+    HELP,
+    JSON,
+    VERBOSE
+} option_id;
+
+typedef struct 
+{
+    char option_name[16];
+    option_id optionID;
+
+} CLIOption;
+
+typedef struct {
+    bool help_mode;
+    bool json_mode;
+    bool verbose_mode;
+} options_mode;
+
 void system_info_init(struct SystemInfo *info);
 void detect_os_bitness(struct SystemInfo *info);
 void detect_cpu_parallelism(struct SystemInfo *info);

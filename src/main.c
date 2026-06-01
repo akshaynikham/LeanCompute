@@ -1,12 +1,22 @@
 #include <stdio.h>
 #include "system_info.h"
 
-int main(){
+int main(int argc, int argv[]){
 
     struct SystemInfo test_info;
     struct formatInfo format_info;
     struct reasons reasons;
-    
+    options_mode options_modes;
+
+    CLIOption supported_options[] =
+    {
+        {"--help", HELP},
+        {"--json", JSON},
+        {"--verbose", VERBOSE}
+    };
+
+    int count = sizeof(supported_options) / sizeof(supported_options[0]);
+
     system_info_init(&test_info);
     detect_os_bitness(&test_info);
     detect_cpu_parallelism(&test_info);

@@ -3,6 +3,21 @@
 #include <string.h>
 #include <stdlib.h>
 
+void validate_options(options_mode options_mode, CLIOption supported_options[], 
+    int argc, char *argv[], int count ){
+
+    for (int i = 1; i < argc ; i++){
+        for(int j = 0; j < (count) ; j++){
+            if ((strcmp(argv[i],supported_options[j].option_name) == 0)){
+                options_mode
+            }
+        }
+    }
+    
+
+
+}
+
 void detect_cpu_parallelism(struct SystemInfo *info){
     if(!info) return;
 
